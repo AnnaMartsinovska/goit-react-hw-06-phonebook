@@ -1,58 +1,75 @@
-import React, { useEffect, useState } from 'react';
+// const Phonebook = () => {
+//   const [contacts, setContacts] = useState([]);
+//   const [filter, setFilter] = useState('');
+
+//   const handleAddContacts = contact => {
+//     const copy = contacts.find(item => item.name === contact.name);
+
+//     copy
+//       ? alert(`${contact.name} is already in contacts.`)
+//       : setContacts([...contacts, contact]);
+//   };
+
+//   const handleChangeFilter = e => {
+//     setFilter(e.target.value);
+//   };
+
+//   const getFilteretData = () => {
+//     return contacts.filter(item =>
+//       item.name.toLowerCase().includes(filter.toLowerCase())
+//     );
+//   };
+
+//   const handleDelete = id => {
+//     setContacts(prev => prev.filter(item => item.id !== id));
+//   };
+
+//   useEffect(() => {
+//     const contacts = JSON.parse(window.localStorage.getItem('contacts'));
+//     if (contacts?.length) {
+//       setContacts(contacts);
+//     }
+//   }, []);
+
+//   useEffect(() => {
+//     window.localStorage.setItem('contacts', JSON.stringify(contacts));
+//   }, [contacts]);
+
+//   return (
+//     <StyledWrap>
+//       <StyledTitle>Phonebook</StyledTitle>
+//       <ContactForm contacts={contacts} onAddContacts={handleAddContacts} />
+//       <StyledTitle>Contacts</StyledTitle>
+//       <StyledText>Find contacts by name</StyledText>
+//       <Filter setFilter={handleChangeFilter} />
+//       <ContactList filterData={getFilteretData()} onDelete={handleDelete} />
+//     </StyledWrap>
+//   );
+// };
+
+import React from 'react';
 import {
   StyledTitle,
   StyledText,
   StyledWrap,
 } from './Phonebook/Phonebook.styled';
-import ContactForm from './Phonebook/ContactForm';
+import { ContactForm } from './Phonebook/ContactForm';
 import { ContactList } from './Phonebook/ContactList';
 import { Filter } from './Phonebook/Filter';
+import { useSelector } from 'react-redux';
 
 const Phonebook = () => {
-  const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState('');
-
-  const handleAddContacts = contact => {
-    const copy = contacts.find(item => item.name === contact.name);
-
-    copy
-      ? alert(`${contact.name} is already in contacts.`)
-      : setContacts([...contacts, contact]);
-  };
-
-  const handleChangeFilter = e => {
-    setFilter(e.target.value);
-  };
-
-  const getFilteretData = () => {
-    return contacts.filter(item =>
-      item.name.toLowerCase().includes(filter.toLowerCase())
-    );
-  };
-
-  const handleDelete = id => {
-    setContacts(prev => prev.filter(item => item.id !== id));
-  };
-
-  useEffect(() => {
-    const contacts = JSON.parse(window.localStorage.getItem('contacts'));
-    if (contacts?.length) {
-      setContacts(contacts);
-    }
-  }, []);
-
-  useEffect(() => {
-    window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  const contacts = useSelector(state => state.contacts);
+  const filter = useSelector(state => state.filter);
 
   return (
     <StyledWrap>
       <StyledTitle>Phonebook</StyledTitle>
-      <ContactForm contacts={contacts} onAddContacts={handleAddContacts} />
+      <ContactForm />
       <StyledTitle>Contacts</StyledTitle>
       <StyledText>Find contacts by name</StyledText>
-      <Filter setFilter={handleChangeFilter} />
-      <ContactList filterData={getFilteretData()} onDelete={handleDelete} />
+      <Filter />
+      <ContactList />
     </StyledWrap>
   );
 };
