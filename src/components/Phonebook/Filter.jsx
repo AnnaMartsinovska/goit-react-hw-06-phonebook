@@ -1,20 +1,17 @@
 import { StyledInput } from './Phonebook.styled';
-import propTypes from 'prop-types';
-
-// export const Filter = ({ setFilter }) => {
-//   return (
-//     <StyledInput
-//       onChange={setFilter}
-//       name="filter"
-//       placeholder="Enter filter value"
-//     />
-//   );
-// };
-
-// Filter.propTypes = {
-//   setFilter: propTypes.func.isRequired,
-// };
+import { useDispatch, useSelector } from 'react-redux';
+import { filterContacts, getFilter } from 'components/redux/sliceFilter';
 
 export const Filter = () => {
-  return <StyledInput name="filter" placeholder="Enter filter value" />;
+  const dispatch = useDispatch();
+  const filter = useSelector(getFilter);
+
+  return (
+    <StyledInput
+      onChange={e => dispatch(filterContacts(e.target.value))}
+      name="filter"
+      placeholder="Enter filter value"
+      value={filter}
+    />
+  );
 };

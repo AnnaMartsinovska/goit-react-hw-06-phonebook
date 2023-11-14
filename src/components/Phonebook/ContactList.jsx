@@ -1,38 +1,39 @@
+import React from 'react';
+import { deleteContact, getContacts } from 'components/redux/sliceContacts';
 import { StyledList, StyledEl } from './Phonebook.styled';
-import propTypes from 'prop-types';
-
-// export const ContactList = ({ filterData, onDelete }) => {
-//   const filteredData = filterData;
-//   return (
-//     <StyledList>
-//       {filteredData.map(contact => (
-//         <StyledEl key={contact.id}>
-//           {contact.name}:{contact.number}
-//           <button onClick={() => onDelete(contact.id)} style={inlineStyle}>
-//             Delete
-//           </button>
-//         </StyledEl>
-//       ))}
-//     </StyledList>
-//   );
-// };
-
-// ContactList.propTypes = {
-//   filterData: propTypes.array.isRequired,
-//   onDelete: propTypes.func.isRequired,
-// };
+import { useDispatch, useSelector } from 'react-redux';
+import { getFilter } from 'components/redux/sliceFilter';
 
 export const ContactList = () => {
-  // const inlineStyle = { marginLeft: '15px', cursor: 'pointer' };
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
 
-  return (
-    <StyledList>
-      {/* {filteredData.map(contact => (
-        <StyledEl key={contact.id}>
-          {contact.name}:{contact.number}
-          <button style={inlineStyle}>Delete</button>
-        </StyledEl>
-      ))} */}
-    </StyledList>
+  const inlineStyle = { marginLeft: '15px', cursor: 'pointer' };
+
+  const handleDelete = id => {
+    dispatch(deleteContact(id));
+  };
+
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
   );
+
+  if (filteredContacts?.length) {
+    return (
+      <StyledList>
+        {filteredContacts.map(contact => (
+          <StyledEl key={contact.id}>
+            {contact.name}:{contact.number}
+            <button
+              onClick={() => handleDelete(contact.id)}
+              style={inlineStyle}
+            >
+              Delete
+            </button>
+          </StyledEl>
+        ))}
+      </StyledList>
+    );
+  }
 };
